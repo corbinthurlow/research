@@ -1,0 +1,108 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 10/03/2017 04:20:37 PM
+-- Design Name: 
+-- Module Name: fir_filter - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity fir_filter_8 is
+    generic(
+        DATA_WIDTH  : natural;
+        FOURTH_DATA_SIZE   : natural := 4;
+        HALF_DATA_SIZE     : natural := 2
+    
+    );
+    Port ( 
+           data_in          : in std_logic_vector((DATA_WIDTH) - 1 downto 0);
+           data_out         : out std_logic_vector(DATA_WIDTH - 1 downto 0);
+           clk              : in std_logic;
+           rst              : in std_logic
+           );
+end fir_filter_8;
+
+architecture Behavioral of fir_filter_8 is
+type fir_data is array
+    (7 downto 0) of signed((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+type fir_coeff is array 
+    (7 downto 0) of signed((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+type fir_mult is array
+    (7 downto 0) of signed ((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+type fir_add0 is array
+    (3 downto 0) of signed((DATA_WIDTH/FOURTH_DATA_SIZE) downto 0);
+type fir_add1 is array
+    (1 downto 0) of signed((DATA_WIDTH/FOURTH_DATA_SIZE) + 1 downto 0);
+
+signal coeff_0          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_1          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_2          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_3          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_4          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_5          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_6          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_7          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+signal coeff_8          : std_logic_vector((DATA_WIDTH/FOURTH_DATA_SIZE) - 1 downto 0);
+    
+signal r_data          : fir_data;
+signal r_coeff         : fir_coeff;
+signal r_mult          : fir_mult;
+signal r_add0          : fir_add0;
+signal r_add1          : fir_add1;
+signal fir_add2        : signed((DATA_WIDTH/FOURTH_DATA_SIZE)+2 downto 0);
+
+begin
+    
+    
+    process(clk,rst)
+    being 
+        if rst = '0' then
+            r_data <= (others=>(others=>'0');
+            r_coeff <= (others=>(others=>'0');
+        elsif clk'event and clk = '1' then
+            r_data <= signed(data_in) & r_data(r_data'length-3 downto 0);
+            r_coeff(0) <= signed(coeff_0);
+            r_coeff(1) <= signed(coeff_1);
+            r_coeff(2) <= signed(coeff_2);
+            r_coeff(3) <= signed(coeff_3);                                           
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end Behavioral;
